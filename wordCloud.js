@@ -18,25 +18,59 @@ var angle = 0;
 var fill = d3.scale.category20();
 
 $(document).ready( function() {
+  // Set width/height of SVG
   width = $("#word-cloud").width();
   height = $("#word-cloud").height();
 
-  $.ajax({
-    type: "get",
-    url: "getWords.php",
-    dataType: "json",
-    success: function(data) {
-      showWordCloud(data);
-    }
+  // click event handler
+  $("#run-btn").click(function() {
+    $("#word-cloud").empty();
+
+    var user_id = $(":text").val();
+    run(user_id);
   });
+
 });
 
-var scale = null;
+function run(user_id) {
+  $.ajax({
+    type: "get",
+    url: "https://www.stepjournal.me/",
+    data: {
+      action: "get_text_term",
+      user_id: user_id,
+      from: "2013-12-01",
+      to: "2013-12-31",
+      timezone: "Asia/Seoul"
+    },
+    dataType: "json",
+    success: function(data) {
+      var str = data['body'];
+      var wordFreqList = WordExtractor.extract(str);
+      var jsonData = getJsonData(wordFreqList);
+      showWordCloud(jsonData);
+    }
+  });
+}
+
+function getJsonData(wordFreqList) {
+  var json = [];
+
+  for (word in wordFreqList) {
+    json.push( {'text' : word, 'freq' : wordFreqList[word]} );
+  }
+
+  return json;
+}
+
 
 //
 // Ready for word cloud
 //
+var scale = null;
 function showWordCloud(jsonData) {
+
+  console.log(jsonData);
 
   // 최대/최소 폰트 크기 설정
   adjustFontSize(jsonData);

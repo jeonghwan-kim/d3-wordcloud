@@ -10,11 +10,24 @@
 </head>
 
 <body>
-  <svg id="word-cloud" width="600" height="400"></svg>
+  
+  <input type="text" placeholder="user id">
+  <button id="run-btn">Run</button>
 
-  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <div>
+    <svg id="word-cloud" width="600" height="400"></svg>
+  </div>
+
+  <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+  <script type="text/javascript">
+  // $("button").click(function() {
+  //   colsole.log(this);
+  // });
+  </script>
   <script src="d3.js"></script>
   <script src="d3.layout.cloud.js"></script>
+  <script src="WordExtractor.js"></script>
   <script src="wordCloud.js"></script>
 
 </body>
